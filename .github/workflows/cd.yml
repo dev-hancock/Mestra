@@ -1,0 +1,61 @@
+name: CD
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+env:
+  DOTNET_VERSION: '9.0.x'
+  NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
+
+permissions:
+  contents: read
+  packages: write
+
+jobs:
+  publish:
+    
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+
+      - name: Version
+        run: echo "VERSION=${GITHUB_REF#refs/tags/v}" >> $GITHUB_ENV
+
+      - name: Restore
+        run: dotnet restore
+
+      - name: Build
+        run: |
+          dotnet build \
+            --configuration Release \
+            --no-restore
+
+      - name: Test
+        run: |
+          dotnet test Mestra.Tests \
+            --no-build \
+            --configuration Release
+
+      - name: Pack
+        run: |
+          dotnet pack Mestra \
+            --configuration Release \
+            --no-build \
+            --output ./nupkg \
+            /p:Version=${{ env.VERSION }}
+
+      - name: Push
+        run: |
+          dotnet nuget push ./nupkg/*.nupkg \
+           --source https://api.nuget.org/v3/index.json \
+           --api-key ${{ env.NUGET_API_KEY }} \
+           --skip-duplicate
