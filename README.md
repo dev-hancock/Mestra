@@ -120,7 +120,3 @@ Contributions are welcome! Please follow standard C# coding conventions and incl
 ## 📄 License
 
 Licensed under the [MIT License](LICENSE).
-
----
-
-Let me know if you want badges for NuGet, CI, or to generate the icon/logo section.
