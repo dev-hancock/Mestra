@@ -97,6 +97,4 @@ public class PublishStrategyTests
         Assert.Equal(Unit.Default, result);
         Assert.All(invoked, x => Assert.InRange(x, delay.Ticks - epsilon, delay.Ticks * 2 + epsilon));
     }
-
-    public class NotificationEvent : INotification;
 }

@@ -149,10 +149,4 @@ public class MediatorTests
         // Assert
         Assert.Null(ex);
     }
-
-    public class PingRequest : IRequest<string>;
-
-    public class CounterRequest : IRequest<long>;
-
-    public class NotificationEvent : INotification;
 }
