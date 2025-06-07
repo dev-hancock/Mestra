@@ -1,0 +1,38 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mestra", "Mestra\Mestra.csproj", "{9E0AF382-CB9A-4E7B-8253-C321318E95DB}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{A6E3DF94-A941-4FEC-88E7-ED105C342DA8}"
+	ProjectSection(SolutionItems) = preProject
+		CHANGELOG.md = CHANGELOG.md
+		README.md = README.md
+		LICENSE = LICENSE
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "workflows", "workflows", "{8BC0B415-78A7-4C86-80F0-56269AE18AF8}"
+	ProjectSection(SolutionItems) = preProject
+		.github\workflows\cd.yml = .github\workflows\cd.yml
+		.github\workflows\ci.yml = .github\workflows\ci.yml
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mestra.Tests", "Mestra.Tests\Mestra.Tests.csproj", "{403F88AB-E745-44F3-8B6B-01E6FF38B60F}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{9E0AF382-CB9A-4E7B-8253-C321318E95DB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9E0AF382-CB9A-4E7B-8253-C321318E95DB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9E0AF382-CB9A-4E7B-8253-C321318E95DB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9E0AF382-CB9A-4E7B-8253-C321318E95DB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{403F88AB-E745-44F3-8B6B-01E6FF38B60F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{403F88AB-E745-44F3-8B6B-01E6FF38B60F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{403F88AB-E745-44F3-8B6B-01E6FF38B60F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{403F88AB-E745-44F3-8B6B-01E6FF38B60F}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{8BC0B415-78A7-4C86-80F0-56269AE18AF8} = {A6E3DF94-A941-4FEC-88E7-ED105C342DA8}
+	EndGlobalSection
+EndGlobal
