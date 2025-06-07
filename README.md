@@ -1,24 +1,28 @@
 # Mestra
 
-[![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=dev-hancock_Mestra\&metric=sqale_rating)](https://sonarcloud.io/summary/new_code?id=dev-hancock_Mestra)
-[![Code Coverage](https://sonarcloud.io/api/project_badges/measure?project=dev-hancock_Mestra\&metric=coverage)](https://sonarcloud.io/summary/new_code?id=dev-hancock_Mestra)
-[![Reliability Rating](https://sonarcloud.io/api/project_badges/measure?project=dev-hancock_Mestra\&metric=reliability_rating)](https://sonarcloud.io/summary/new_code?id=dev-hancock_Mestra)
-[![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=dev-hancock_Mestra\&metric=security_rating)](https://sonarcloud.io/summary/new_code?id=dev-hancock_Mestra)
+[![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=dev-hancock_Mestra&metric=sqale_rating)](https://sonarcloud.io/summary/new_code?id=dev-hancock_Mestra)
+[![Code Coverage](https://sonarcloud.io/api/project_badges/measure?project=dev-hancock_Mestra&metric=coverage)](https://sonarcloud.io/summary/new_code?id=dev-hancock_Mestra)
+[![Reliability Rating](https://sonarcloud.io/api/project_badges/measure?project=dev-hancock_Mestra&metric=reliability_rating)](https://sonarcloud.io/summary/new_code?id=dev-hancock_Mestra)
+[![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=dev-hancock_Mestra&metric=security_rating)](https://sonarcloud.io/summary/new_code?id=dev-hancock_Mestra)
 
 ![Mestra logo](https://github.com/dev-hancock/Mestra/blob/main/icon.png)
 
-**Mestra** is a minimal, reactive alternative to MediatR for .NET applications. Built on Rx, it enables flexible message
-dispatching and composition through pipelines and observables—ideal for modern, composable, and testable application
-architectures.
+**Mestra** is a minimal, reactive alternative to MediatR for .NET.
+It provides simple abstractions for **request/response**, **notifications**, and **pipelines**, built
+on [Reactive Extensions (Rx)](https://github.com/dotnet/reactive).
+
+Designed for modern, testable, and highly composable application architectures.
 
 ## ✨ Features
 
-* 🔁 `Send` and `Publish` abstraction over CQRS-style messaging
-* ⚙️ Customizable `IPipelineBehavior<,>` support
-* 📦 Pluggable with Microsoft.Extensions.DependencyInjection
-* 🧪 Fully testable with clean separation of concerns
-* 📡 Observable-based API with full Rx support
-* 🧵 Zero threading assumptions – caller controls scheduling and subscription
+* ✅ `Send` and `Publish` abstractions over CQRS-style messaging
+* ✅ Customizable `IPipelineBehavior<TMessage, TResponse>` pipeline composition
+* ✅ Built on Rx (`IObservable<T>`) for reactive stream support
+* ✅ Pluggable with `Microsoft.Extensions.DependencyInjection`
+* ✅ Fully testable, no internal threading assumptions
+* ✅ Minimal API surface — optimized for control and performance
+* ✅ Supports streaming messages (`Range`, `Interval`, etc.)
+* ✅ No external dependencies beyond Rx & .NET
 
 ## 📦 Installation
 
@@ -26,35 +30,36 @@ architectures.
 dotnet add package Mestra
 ```
 
-> Requires **.NET 8.0 SDK or later**
+> Requires **.NET 8.0 or later**
 
 ## 🚀 Quick Start
 
-### 1. Register with Dependency Injection
+### 1️. Register Mestra in DI
 
 ```csharp
 builder.Services.AddMestra(options =>
 {
-    options.AddHandlers(typeof(PingHandler));
+    options.AddHandlers(typeof(PingRequestHandler));
+    options.AddHandlersFromAssembly(typeof(Startup).Assembly);
     options.AddBehaviors(typeof(LoggingBehavior<,>));
 });
 ```
 
-### 2. Define Messages and Handlers
+### 2. Define Requests and Handlers
 
 ```csharp
-public class Ping : IMessage<string> { }
+public class PingRequest : IRequest<string> { }
 
-public class PingHandler : IMessageHandler<Ping, string>
+public class PingRequestHandler : IMessageHandler<PingRequest, string>
 {
-    public IObservable<string> Handle(Ping message)
+    public IObservable<string> Handle(PingRequest request)
     {
         return Observable.Return("pong");
     }
 }
 ```
 
-### 3. Use IMediator
+### 3️. Use IMediator
 
 ```csharp
 public class MyService
@@ -68,51 +73,89 @@ public class MyService
 
     public async Task<string> PingAsync()
     {
-        return await _mediator.Send(new Ping());
+        return await _mediator.Send(new PingRequest());
     }
 }
 ```
 
-## 🔄 Publish Notifications
+## 🔄 Publish Messages
+
+Mestra supports one-to-many eventing via `Publish`:
 
 ```csharp
-public class MyNotification : INotification { }
+public class NotificationEvent : INotification { }
 
-public class NotifyHandler : IMessageHandler<MyNotification, Unit>
+public class NotificationEventHandler : IMessageHandler<NotificationEvent, Unit>
 {
-    public IObservable<Unit> Handle(MyNotification notification)
+    public IObservable<Unit> Handle(NotificationEvent notification)
     {
+        Console.WriteLine("Notification event received.");
+        
         return Observable.Return(Unit.Default);
     }
 }
 ```
 
+Usage:
+
 ```csharp
-await _mediator.Publish(new MyNotification());
+await _mediator.Publish(new NotificationEvent());
 ```
 
-## ⚙️ Advanced
+## ⚙️ Advanced: Pipelines & Streaming
 
-Mestra supports Rx-based streaming:
+### Pipeline Behavior Example
 
 ```csharp
-public class StreamMessage : IMessage<int> { }
-
-public class StreamHandler : IMessageHandler<StreamMessage, int>
+public class LoggingBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
+    where TRequest : IMessage<TResponse>
 {
-    public IObservable<int> Handle(StreamMessage message) 
+    public IObservable<TResponse> Handle(TRequest request, IObservable<TResponse> next)
     {
-        return Observable.Range(1, 3); 
+        Console.WriteLine($"Handling {typeof(TRequest).Name}");
+        
+        return next.Do(_ => Console.WriteLine($"Handled {typeof(TRequest).Name}"));
     }
 }
 ```
 
+### Streaming Example
+
+```csharp
+public class CounterRequest : IRequest<int> { }
+
+public class CounterRequestHandler : IMessageHandler<CounterRequest, int>
+{
+    public IObservable<int> Handle(CounterRequest request)
+    {
+        return Observable.Range(1, 3);
+    }
+}
+```
+
+Consume the full stream as a list:
+
+```csharp
+var results = await _mediator.Send(new CounterRequest()).ToList();
+```
+
+Or subscribe to each item in the stream:
+
+```csharp
+var token = _mediator
+    .Send(new CounterRequest())
+    .Subscribe(count => 
+    {
+        Console.Writeline($"Counter: {count}");
+    })
+```
+
 ## 🧪 Testing
 
-Mestra is designed to be fully testable. You can mock any handler or behavior using Moq or AutoFixture:
+Mestra is fully testable — all core abstractions are interface-based and Rx-friendly.
 
-```bash
-dotnet test
+```shell
+    dotnet test
 ```
 
 ## 🤝 Contributing
@@ -121,4 +164,4 @@ Contributions are welcome! Please follow standard C# coding conventions and incl
 
 ## 📄 License
 
-Licensed under the [MIT License](LICENSE).
+Mestra is licensed under the [MIT License](LICENSE).
