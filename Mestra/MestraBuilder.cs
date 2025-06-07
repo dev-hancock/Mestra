@@ -24,9 +24,7 @@ public class MestraBuilder
 
             var interfaces = type
                 .GetInterfaces()
-                .Where(i =>
-                    i.IsGenericType &&
-                    i.GetGenericTypeDefinition() == typeof(IPipelineBehavior<,>));
+                .Where(i => i.IsGenericType && i.GetGenericTypeDefinition() == typeof(IPipelineBehavior<,>));
 
             foreach (var @interface in interfaces) _services.AddTransient(@interface, type);
         }
@@ -45,9 +43,7 @@ public class MestraBuilder
 
             var interfaces = type
                 .GetInterfaces()
-                .Where(i =>
-                    i.IsGenericType &&
-                    i.GetGenericTypeDefinition() == typeof(IMessageHandler<,>));
+                .Where(i => i.IsGenericType && i.GetGenericTypeDefinition() == typeof(IPipelineBehavior<,>));
 
             foreach (var @interface in interfaces) _services.AddTransient(@interface, type);
         }
