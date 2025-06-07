@@ -8,7 +8,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 public class Mediator : IMediator
 {
-    private readonly ConcurrentDictionary<Type, Pipeline> _pipelines = new();
+    private readonly ConcurrentDictionary<Type, IPipeline> _pipelines = new();
 
     private readonly IPublishDispatcher _publish;
 
@@ -41,12 +41,12 @@ public class Mediator : IMediator
         return pipeline.Handle(notification, _publish).Select(x => (Unit)x!);
     }
 
-    private Pipeline GetPipeline<TResponse>(IMessage<TResponse> message)
+    private IPipeline GetPipeline<TResponse>(IMessage<TResponse> message)
     {
         return (_services.GetRequiredService(
             typeof(IPipeline<,>).MakeGenericType(
                 message.GetType(),
                 typeof(TResponse))
-        ) as Pipeline)!;
+        ) as IPipeline)!;
     }
 }
