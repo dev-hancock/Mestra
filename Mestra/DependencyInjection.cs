@@ -10,7 +10,6 @@ public static class DependencyInjection
     {
         var builder = new MestraBuilder(services);
 
-        services.AddSingleton<PipelineFactory>();
         services.AddTransient(typeof(IPipeline<,>), typeof(Pipeline<,>));
 
         services.AddTransient<IPublishStrategy, ParallelPublishStrategy>();

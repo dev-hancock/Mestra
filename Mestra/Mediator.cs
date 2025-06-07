@@ -4,20 +4,21 @@ using System.Collections.Concurrent;
 using System.Reactive;
 using System.Reactive.Linq;
 using Interfaces;
+using Microsoft.Extensions.DependencyInjection;
 
 public class Mediator : IMediator
 {
-    private readonly PipelineFactory _factory;
-
     private readonly ConcurrentDictionary<Type, Pipeline> _pipelines = new();
 
     private readonly IPublishDispatcher _publish;
 
     private readonly ISendDispatcher _send;
 
-    public Mediator(PipelineFactory factory, IPublishDispatcher publish, ISendDispatcher send)
+    private readonly IServiceProvider _services;
+
+    public Mediator(IServiceProvider services, IPublishDispatcher publish, ISendDispatcher send)
     {
-        _factory = factory;
+        _services = services;
         _publish = publish;
         _send = send;
     }
@@ -26,7 +27,7 @@ public class Mediator : IMediator
     {
         var type = message.GetType();
 
-        var pipeline = _pipelines.GetOrAdd(type, _ => _factory.Create(message));
+        var pipeline = _pipelines.GetOrAdd(type, _ => GetPipeline(message));
 
         return pipeline.Handle(message, _send).Select(x => (TResponse)x!);
     }
@@ -35,8 +36,17 @@ public class Mediator : IMediator
     {
         var type = notification.GetType();
 
-        var pipeline = _pipelines.GetOrAdd(type, _ => _factory.Create(notification));
+        var pipeline = _pipelines.GetOrAdd(type, _ => GetPipeline(notification));
 
         return pipeline.Handle(notification, _publish).Select(x => (Unit)x!);
+    }
+
+    private Pipeline GetPipeline<TResponse>(IMessage<TResponse> message)
+    {
+        return (_services.GetRequiredService(
+            typeof(IPipeline<,>).MakeGenericType(
+                message.GetType(),
+                typeof(TResponse))
+        ) as Pipeline)!;
     }
 }
