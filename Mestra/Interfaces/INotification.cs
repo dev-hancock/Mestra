@@ -1,4 +1,4 @@
-namespace Mestra;
+namespace Mestra.Interfaces;
 
 using System.Reactive;
 

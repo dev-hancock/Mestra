@@ -1,4 +1,4 @@
-namespace Mestra;
+namespace Mestra.Interfaces;
 
 public interface IPipeline<in TMessage, out TResponse> where TMessage : IMessage<TResponse>
 {

@@ -3,16 +3,17 @@ namespace Mestra;
 using System.Collections.Concurrent;
 using System.Reactive;
 using System.Reactive.Linq;
+using Interfaces;
 
 public class Mediator : IMediator
 {
+    private readonly PipelineFactory _factory;
+
     private readonly ConcurrentDictionary<Type, Pipeline> _pipelines = new();
 
     private readonly IPublishDispatcher _publish;
 
     private readonly ISendDispatcher _send;
-    
-    private readonly PipelineFactory _factory;
 
     public Mediator(PipelineFactory factory, IPublishDispatcher publish, ISendDispatcher send)
     {
@@ -25,8 +26,8 @@ public class Mediator : IMediator
     {
         var type = message.GetType();
 
-        var pipeline = _pipelines.GetOrAdd(type,  _ => _factory.Create(message));
-        
+        var pipeline = _pipelines.GetOrAdd(type, _ => _factory.Create(message));
+
         return pipeline.Handle(message, _send).Select(x => (TResponse)x!);
     }
 

@@ -7,7 +7,9 @@
 
 ![Mestra logo](https://raw.githubusercontent.com/dev-hancock/Mestra/main/icon.png)
 
-**Mestra** is a minimal, reactive alternative to MediatR for .NET applications. Built on Rx, it enables flexible message dispatching and composition through pipelines and observables—ideal for modern, composable, and testable application architectures.
+**Mestra** is a minimal, reactive alternative to MediatR for .NET applications. Built on Rx, it enables flexible message
+dispatching and composition through pipelines and observables—ideal for modern, composable, and testable application
+architectures.
 
 ## ✨ Features
 

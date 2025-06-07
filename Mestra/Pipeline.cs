@@ -1,6 +1,7 @@
 namespace Mestra;
 
 using System.Reactive.Linq;
+using Interfaces;
 
 public abstract class Pipeline
 {
@@ -16,18 +17,18 @@ public class Pipeline<TMessage, TResponse> : Pipeline, IPipeline<TMessage, TResp
         _behaviors = behaviors.Reverse();
     }
 
-    public override IObservable<object?> Handle(object message, IDispatcher dispatcher)
-    {
-        return Handle((TMessage)message, dispatcher).Select(x => (object?)x);
-    }
-
     public IObservable<TResponse> Handle(TMessage message, IDispatcher dispatcher)
     {
         var pipeline = _behaviors.Aggregate(
-            seed: dispatcher.Dispatch<TMessage, TResponse>(message),
-            func: (next, behavior) => behavior.Handle(message, next)
+            dispatcher.Dispatch<TMessage, TResponse>(message),
+            (next, behavior) => behavior.Handle(message, next)
         );
 
         return pipeline;
+    }
+
+    public override IObservable<object?> Handle(object message, IDispatcher dispatcher)
+    {
+        return Handle((TMessage)message, dispatcher).Select(x => (object?)x);
     }
 }

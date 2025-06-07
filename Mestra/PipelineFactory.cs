@@ -1,5 +1,7 @@
 namespace Mestra;
 
+using Interfaces;
+
 public class PipelineFactory(IServiceProvider services)
 {
     public Pipeline Create<TResponse>(IMessage<TResponse> message)
@@ -10,7 +12,7 @@ public class PipelineFactory(IServiceProvider services)
         {
             throw new Exception($"Unable to find pipeline for {type}");
         }
-        
+
         return pipeline;
     }
 }

@@ -1,6 +1,7 @@
 namespace Mestra;
 
 using System.Reactive.Linq;
+using Interfaces;
 using Microsoft.Extensions.DependencyInjection;
 
 public class SendDispatcher : ISendDispatcher
@@ -11,11 +12,11 @@ public class SendDispatcher : ISendDispatcher
     {
         _services = services;
     }
-    
+
     public IObservable<TResponse> Dispatch<TMessage, TResponse>(TMessage message) where TMessage : IMessage<TResponse>
     {
         var handler = _services.GetRequiredService<IMessageHandler<TMessage, TResponse>>();
-        
+
         return Observable.Defer(() => handler.Handle(message));
     }
 }
