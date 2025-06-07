@@ -19,11 +19,6 @@ public class PublishDispatcher : IPublishDispatcher
 
     public IObservable<TResponse> Dispatch<TMessage, TResponse>(TMessage message) where TMessage : IMessage<TResponse>
     {
-        if (typeof(TResponse) != typeof(Unit))
-        {
-            throw new InvalidOperationException($"Expected Unit, got {typeof(TResponse).Name}");
-        }
-
         var handlers = _services.GetServices<IMessageHandler<TMessage, TResponse>>().ToArray();
 
         if (handlers.Length == 0)
