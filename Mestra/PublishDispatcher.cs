@@ -5,6 +5,9 @@ using System.Reactive.Linq;
 using Interfaces;
 using Microsoft.Extensions.DependencyInjection;
 
+/// <summary>
+///     Dispatches notification messages using the configured publish strategy.
+/// </summary>
 public class PublishDispatcher : IPublishDispatcher
 {
     private readonly IServiceProvider _services;
@@ -17,6 +20,7 @@ public class PublishDispatcher : IPublishDispatcher
         _strategy = strategy;
     }
 
+    /// <inheritdoc />
     public IObservable<TResponse> Dispatch<TMessage, TResponse>(TMessage message) where TMessage : IMessage<TResponse>
     {
         var handlers = _services.GetServices<IMessageHandler<TMessage, TResponse>>().ToArray();

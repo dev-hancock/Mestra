@@ -4,8 +4,14 @@ using Interfaces;
 using Microsoft.Extensions.DependencyInjection;
 using Strategies;
 
+/// <summary>
+///     Provides extension methods for configuring Mestra services.
+/// </summary>
 public static class DependencyInjection
 {
+    /// <summary>
+    ///     Adds Mestra components to the service collection.
+    /// </summary>
     public static IServiceCollection AddMestra(this IServiceCollection services, Action<MestraBuilder>? configure = null)
     {
         var builder = new MestraBuilder(services);

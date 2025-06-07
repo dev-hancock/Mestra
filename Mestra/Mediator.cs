@@ -6,6 +6,9 @@ using System.Reactive.Linq;
 using Interfaces;
 using Microsoft.Extensions.DependencyInjection;
 
+/// <summary>
+///     Default implementation of the Mestra mediator.
+/// </summary>
 public class Mediator : IMediator
 {
     private readonly ConcurrentDictionary<Type, IPipeline> _pipelines = new();
@@ -23,6 +26,7 @@ public class Mediator : IMediator
         _send = send;
     }
 
+    /// <inheritdoc />
     public IObservable<TResponse> Send<TResponse>(IRequest<TResponse> message)
     {
         var type = message.GetType();
@@ -32,6 +36,7 @@ public class Mediator : IMediator
         return pipeline.Handle(message, _send).Select(x => (TResponse)x!);
     }
 
+    /// <inheritdoc />
     public IObservable<Unit> Publish(INotification notification)
     {
         var type = notification.GetType();

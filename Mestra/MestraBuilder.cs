@@ -4,6 +4,9 @@ using System.Reflection;
 using Interfaces;
 using Microsoft.Extensions.DependencyInjection;
 
+/// <summary>
+///     Provides a fluent API for configuring Mestra components.
+/// </summary>
 public class MestraBuilder
 {
     private readonly IServiceCollection _services;
@@ -13,6 +16,9 @@ public class MestraBuilder
         _services = services;
     }
 
+    /// <summary>
+    ///     Registers pipeline behaviors.
+    /// </summary>
     public MestraBuilder AddBehaviors(params Type[] types)
     {
         foreach (var type in types)
@@ -32,6 +38,9 @@ public class MestraBuilder
         return this;
     }
 
+    /// <summary>
+    ///     Registers message handlers.
+    /// </summary>
     public MestraBuilder AddHandlers(params Type[] types)
     {
         foreach (var type in types)
@@ -51,6 +60,9 @@ public class MestraBuilder
         return this;
     }
 
+    /// <summary>
+    ///     Registers message handlers from the specified assembly.
+    /// </summary>
     public MestraBuilder AddHandlersFromAssembly(Assembly assembly)
     {
         var handlers = assembly
@@ -63,6 +75,9 @@ public class MestraBuilder
         return this;
     }
 
+    /// <summary>
+    ///     Registers a custom publish strategy.
+    /// </summary>
     public MestraBuilder UsePublishStrategy<TStrategy>() where TStrategy : class, IPublishStrategy
     {
         _services.AddTransient<IPublishStrategy, TStrategy>();
