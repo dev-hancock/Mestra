@@ -1,5 +1,6 @@
 namespace Mestra.Tests;
 
+using System.Reactive.Linq;
 using Interfaces;
 using Microsoft.Extensions.DependencyInjection;
 using Strategies;
@@ -28,9 +29,9 @@ public class MestraBuilderTests
         var services = new ServiceCollection();
         var builder = new MestraBuilder(services);
 
-        var ex = Assert.Throws<InvalidOperationException>(() => builder.AddBehaviors(typeof(AbstractPipelineBehavior)));
+        var ex = Record.Exception(() => builder.AddBehaviors(typeof(AbstractPipelineBehavior)));
 
-        Assert.Contains("must be a concrete class", ex.Message);
+        Assert.Contains("must be a concrete class", ex?.Message);
     }
 
     [Fact]
@@ -71,9 +72,9 @@ public class MestraBuilderTests
         var services = new ServiceCollection();
         var builder = new MestraBuilder(services);
 
-        var ex = Assert.Throws<InvalidOperationException>(() => builder.AddHandlers(typeof(AbstractMessageHandler)));
+        var ex = Record.Exception(() => builder.AddHandlers(typeof(AbstractMessageHandler)));
 
-        Assert.Contains("must be a concrete class", ex.Message);
+        Assert.Contains("must be a concrete class", ex?.Message);
     }
 
     [Fact]
@@ -100,7 +101,7 @@ public class MestraBuilderTests
     {
         public IObservable<SampleResponse> Handle(SampleRequest message)
         {
-            throw new NotImplementedException();
+            return Observable.Empty<SampleResponse>();
         }
     }
 
@@ -108,7 +109,7 @@ public class MestraBuilderTests
     {
         public IObservable<SampleResponse> Handle(SampleRequest message)
         {
-            throw new NotImplementedException();
+            return Observable.Empty<SampleResponse>();
         }
     }
 
@@ -116,7 +117,7 @@ public class MestraBuilderTests
     {
         public IObservable<SampleResponse> Handle(SampleRequest message, IObservable<SampleResponse> next)
         {
-            throw new NotImplementedException();
+            return Observable.Empty<SampleResponse>();
         }
     }
 
@@ -124,7 +125,7 @@ public class MestraBuilderTests
     {
         public IObservable<SampleResponse> Handle(SampleRequest message, IObservable<SampleResponse> next)
         {
-            throw new NotImplementedException();
+            return Observable.Empty<SampleResponse>();
         }
     }
 }

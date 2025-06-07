@@ -15,7 +15,14 @@ public class SendDispatcher : ISendDispatcher
 
     public IObservable<TResponse> Dispatch<TMessage, TResponse>(TMessage message) where TMessage : IMessage<TResponse>
     {
-        var handler = _services.GetRequiredService<IMessageHandler<TMessage, TResponse>>();
+        var handler = _services.GetService<IMessageHandler<TMessage, TResponse>>();
+
+        if (handler == null)
+        {
+            return Observable.Throw<TResponse>(
+                new InvalidOperationException(
+                    $"No handler was found for request of type {typeof(TMessage).Name}"));
+        }
 
         return Observable.Defer(() => handler.Handle(message));
     }

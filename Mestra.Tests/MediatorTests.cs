@@ -2,6 +2,7 @@ namespace Mestra.Tests;
 
 using System.Reactive;
 using System.Reactive.Linq;
+using System.Reactive.Threading.Tasks;
 using Interfaces;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Reactive.Testing;
@@ -115,6 +116,38 @@ public class MediatorTests
         };
 
         Assert.Equal(expected, invoked);
+    }
+
+    [Fact]
+    public async Task Send_ShouldThrow_WhenNoHandlerRegistered()
+    {
+        // Arrange
+        var services = new ServiceCollection().AddMestra();
+
+        var provider = services.BuildServiceProvider();
+        var mediator = provider.GetRequiredService<IMediator>();
+
+        // Act
+        var ex = await Record.ExceptionAsync(() => mediator.Send(new PingRequest()).ToTask());
+
+        // Assert
+        Assert.Contains("No handler was found for request of type PingRequest", ex?.Message);
+    }
+
+    [Fact]
+    public async Task Publish_ShouldComplete_WhenNoHandlerRegistered()
+    {
+        // Arrange
+        var services = new ServiceCollection().AddMestra();
+
+        var provider = services.BuildServiceProvider();
+        var mediator = provider.GetRequiredService<IMediator>();
+
+        // Act
+        var ex = await Record.ExceptionAsync(() => mediator.Publish(new NotificationEvent()).ToTask());
+
+        // Assert
+        Assert.Null(ex);
     }
 
     public class PingRequest : IRequest<string>;

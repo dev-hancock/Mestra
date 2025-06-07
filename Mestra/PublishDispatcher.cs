@@ -24,7 +24,12 @@ public class PublishDispatcher : IPublishDispatcher
             throw new InvalidOperationException($"Expected Unit, got {typeof(TResponse).Name}");
         }
 
-        var handlers = _services.GetServices<IMessageHandler<TMessage, TResponse>>();
+        var handlers = _services.GetServices<IMessageHandler<TMessage, TResponse>>().ToArray();
+
+        if (handlers.Length == 0)
+        {
+            return Observable.Return(Unit.Default).Select(x => (TResponse)(object)x);
+        }
 
         var adapters = handlers
             .Select(handler => (IMessageHandler<IMessage<Unit>, Unit>)
