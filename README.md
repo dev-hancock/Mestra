@@ -5,7 +5,7 @@
 [![Reliability Rating](https://sonarcloud.io/api/project_badges/measure?project=dev-hancock_Mestra\&metric=reliability_rating)](https://sonarcloud.io/summary/new_code?id=dev-hancock_Mestra)
 [![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=dev-hancock_Mestra\&metric=security_rating)](https://sonarcloud.io/summary/new_code?id=dev-hancock_Mestra)
 
-![Mestra logo](https://raw.githubusercontent.com/dev-hancock/Mestra/main/icon.png)
+![Mestra logo](https://github.com/dev-hancock/Mestra/blob/main/icon.png)
 
 **Mestra** is a minimal, reactive alternative to MediatR for .NET applications. Built on Rx, it enables flexible message
 dispatching and composition through pipelines and observables—ideal for modern, composable, and testable application
