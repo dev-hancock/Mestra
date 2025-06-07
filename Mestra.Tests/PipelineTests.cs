@@ -4,7 +4,7 @@ using System.Reactive.Linq;
 using Interfaces;
 using Moq;
 
-public class PipelineBehaviorTests
+public class PipelineTests
 {
     [Fact]
     public async Task Pipeline_ShouldInvokeDispatcher_WhenNoBehaviors()
@@ -78,5 +78,30 @@ public class PipelineBehaviorTests
 
         Assert.Equal("pong", result);
         Assert.Equal(expected, log);
+    }
+
+    [Fact]
+    public async Task Pipeline_ShouldDispatchMessage_WhenBehaviorsPresent()
+    {
+        // Arrange
+        var dispatcher = new Mock<IDispatcher>();
+        dispatcher
+            .Setup(x => x.Dispatch<PingRequest, string>(It.IsAny<PingRequest>()))
+            .Returns(Observable.Return("pong"));
+
+        var behavior = new Mock<IPipelineBehavior<PingRequest, string>>();
+        behavior
+            .Setup(x => x.Handle(It.IsAny<PingRequest>(), It.IsAny<IObservable<string>>()))
+            .Returns((PingRequest _, IObservable<string> next) => next);
+
+        var pipeline = new Pipeline<PingRequest, string>([behavior.Object]);
+
+        // Act
+        var result = await pipeline.Handle(new PingRequest(), dispatcher.Object);
+
+        // Assert
+        dispatcher.Verify(x => x.Dispatch<PingRequest, string>(It.IsAny<PingRequest>()), Times.Once);
+
+        Assert.Equal("pong", result);
     }
 }
