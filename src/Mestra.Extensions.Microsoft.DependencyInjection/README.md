@@ -7,7 +7,7 @@
 
 It enables seamless registration of Mestra’s mediator services and pipeline behaviors in .NET applications.
 
-## 📦 Installation
+## 📥 Installation
 
 ```bash
 dotnet add package Mestra.Extensions.Microsoft.DependencyInjection

@@ -15,7 +15,7 @@ Typical consumers of this package include:
 * Cross-cutting libraries
 * Third-party extensions to Mestra
 
-## 📦 Installation
+## 📥 Installation
 
 ```bash
 dotnet add package Mestra.Abstractions

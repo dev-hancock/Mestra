@@ -8,7 +8,7 @@ and [FluentValidation](https://fluentvalidation.net/).
 It allows you to automatically register FluentValidation validators as Mestra pipeline behaviors, enabling validation of
 Mestra requests automatically as part of the pipeline.
 
-## 📦 Installation
+## 📥 Installation
 
 ```bash
 dotnet add package Mestra.FluentValidation
