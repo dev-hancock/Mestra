@@ -1,0 +1,36 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFrameworks>netstandard2.1;net8.0;net9.0</TargetFrameworks>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <LangVersion>12</LangVersion>
+    </PropertyGroup>
+
+    <PropertyGroup>
+        <PackageId>Mestra.Abstractions</PackageId>
+        <Authors>Adam Hancock</Authors>
+        <Company>Hancock Software Solutions Limited</Company>
+        <Description>Core contracts and interfaces for the Mestra reactive mediator library.</Description>
+        <PackageTags>mediator mediatr cqrs messaging pipeline reactive abstractions lightweight</PackageTags>
+        <RepositoryUrl>https://github.com/dev-hancock/Mestra</RepositoryUrl>
+        <PackageLicenseExpression>MIT</PackageLicenseExpression>
+        <PackageProjectUrl>https://github.com/dev-hancock/Mestra</PackageProjectUrl>
+        <IncludeSymbols>true</IncludeSymbols>
+        <IncludeSource>true</IncludeSource>
+        <PackageIcon>icon.png</PackageIcon>
+        <PackageReadmeFile>README.md</PackageReadmeFile>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <None Include="..\..\icon.png" Pack="true" PackagePath="icon.png">
+            <Link>icon.png</Link>
+        </None>
+    </ItemGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Moq" Version="4.11.0" />
+        <PackageReference Include="System.Reactive" Version="6.0.1"/>
+    </ItemGroup>
+
+</Project>

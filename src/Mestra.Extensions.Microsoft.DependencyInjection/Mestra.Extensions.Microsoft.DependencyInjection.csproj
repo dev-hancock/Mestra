@@ -1,0 +1,44 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFrameworks>net8.0;net9.0</TargetFrameworks>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
+
+    <PropertyGroup>
+        <PackageId>Mestra.Extensions.Microsoft.DependencyInjection</PackageId>
+        <Authors>Adam Hancock</Authors>
+        <Company>Hancock Software Solutions Limited</Company>
+        <Description>Microsoft.Extensions.DependencyInjection integration for the Mestra reactive mediator library.</Description>
+        <PackageTags>mediator mediatr cqrs messaging pipeline reactive dependencyinjection extensions microsoft</PackageTags>
+        <RepositoryUrl>https://github.com/dev-hancock/Mestra</RepositoryUrl>
+        <PackageLicenseExpression>MIT</PackageLicenseExpression>
+        <PackageProjectUrl>https://github.com/dev-hancock/Mestra</PackageProjectUrl>
+        <IncludeSymbols>true</IncludeSymbols>
+        <IncludeSource>true</IncludeSource>
+        <PackageIcon>icon.png</PackageIcon>
+        <PackageReadmeFile>README.md</PackageReadmeFile>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <None Include="..\..\icon.png" Pack="true" PackagePath="icon.png">
+            <Link>icon.png</Link>
+        </None>
+    </ItemGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="9.0.5"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleTo">
+            <_Parameter1>Mestra.Extensions.Microsoft.DependencyInjection.Tests</_Parameter1>
+        </AssemblyAttribute>
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\Mestra\Mestra.csproj"/>
+    </ItemGroup>
+
+</Project>
