@@ -30,6 +30,11 @@ jobs:
       - name: Version
         run: echo "VERSION=${GITHUB_REF#refs/tags/v}" >> $GITHUB_ENV
 
+      - name: Clean
+        run: |
+          dotnet nuget locals all --clear
+          dotnet clean --configuration Release
+          
       - name: Restore
         run: dotnet restore
 

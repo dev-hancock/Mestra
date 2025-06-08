@@ -6,18 +6,18 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageVersion Include="AutoFixture" Version="4.18.1"/>
-        <PackageVersion Include="AutoFixture.AutoMoq" Version="4.18.1"/>
-        <PackageVersion Include="Moq" Version="4.11.0"/>
-        <PackageVersion Include="FluentValidation" Version="12.0.0"/>
-        <PackageVersion Include="FluentValidation.DependencyInjectionExtensions" Version="12.0.0"/>
-        <PackageVersion Include="xunit" Version="2.9.3"/>
-        <PackageVersion Include="xunit.runner.visualstudio" Version="3.1.0"/>
-        <PackageVersion Include="coverlet.collector" Version="6.0.4"/>
-        <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="17.14.0"/>
-        <PackageVersion Include="Microsoft.Extensions.DependencyInjection" Version="9.0.5"/>
-        <PackageVersion Include="System.Reactive" Version="6.0.1"/>
-        <PackageVersion Include="Microsoft.Reactive.Testing" Version="6.0.1"/>
+        <PackageVersion Include="AutoFixture" Version="[4.18.1]"/>
+        <PackageVersion Include="AutoFixture.AutoMoq" Version="[4.18.1]"/>
+        <PackageVersion Include="Moq" Versio="[4.11.0]"/>
+        <PackageVersion Include="FluentValidation" Versio="[12.0.0]"/>
+        <PackageVersion Include="FluentValidation.DependencyInjectionExtensions" Versio="[12.0.0]"/>
+        <PackageVersion Include="xunit" Versio="[2.9.3]"/>
+        <PackageVersion Include="xunit.runner.visualstudio" Versio="[3.1.0]"/>
+        <PackageVersion Include="coverlet.collector" Versio="[6.0.4]"/>
+        <PackageVersion Include="Microsoft.NET.Test.Sdk" Versio="[17.14.0]"/>
+        <PackageVersion Include="Microsoft.Extensions.DependencyInjection" Versio="[9.0.5]"/>
+        <PackageVersion Include="System.Reactive" Versio="[6.0.1]"/>
+        <PackageVersion Include="Microsoft.Reactive.Testing" Versio="[6.0.1]"/>
     </ItemGroup>
 </Project>
 
