@@ -42,7 +42,7 @@ jobs:
             /k:"${{ env.SONAR_PROJECT_KEY }}" \
             /o:"${{ env.SONAR_ORGANIZATION }}" \
             /d:sonar.token="${{ secrets.SONAR_TOKEN }}" \
-            /d:sonar.cs.opencover.reportsPaths=TestResults/**/coverage.opencover.xml
+            /d:sonar.cs.opencover.reportsPaths=tests/**/TestResults/**/coverage.opencover.xml
 
       - name: Build
         run: |
