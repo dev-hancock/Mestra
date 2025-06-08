@@ -28,6 +28,11 @@ jobs:
       - name: Install Sonar
         run: dotnet tool install --global dotnet-sonarscanner
 
+      - name: Clean
+        run: |
+          dotnet nuget locals all --clear
+          dotnet clean --configuration Release
+
       - name: Restore
         run: dotnet restore
 
