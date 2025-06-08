@@ -13,8 +13,6 @@ on [Reactive Extensions (Rx)](https://github.com/dotnet/reactive).
 
 Designed for modern, testable, and highly composable application architectures.
 
----
-
 ## ✨ Features
 
 * ✅ `Send` and `Publish` abstractions over CQRS-style messaging
@@ -26,8 +24,6 @@ Designed for modern, testable, and highly composable application architectures.
 * ✅ Supports streaming messages (`Range`, `Interval`, etc.)
 * ✅ No external dependencies beyond Rx & .NET
 
----
-
 ## 📦 Packages
 
 | Package                                                                                                                           | Description                                                |
@@ -36,8 +32,6 @@ Designed for modern, testable, and highly composable application architectures.
 | [Mestra.Abstractions](https://www.nuget.org/packages/Mestra.Abstractions)                                                         | Core interfaces & contracts (no implementation)            |
 | [Mestra.Extensions.Microsoft.DependencyInjection](https://www.nuget.org/packages/Mestra.Extensions.Microsoft.DependencyInjection) | DI extensions for Microsoft.Extensions.DependencyInjection |
 | [Mestra.FluentValidation](https://www.nuget.org/packages/Mestra.FluentValidation)                                                 | Integration with FluentValidation via pipeline behaviors   |
-
----
 
 ## 📥 Installation
 
@@ -58,8 +52,6 @@ dotnet add package Mestra.Extensions.Microsoft.DependencyInjection
 ```bash
 dotnet add package Mestra.FluentValidation
 ```
-
----
 
 ## 🚀 Quick Start
 
@@ -83,8 +75,6 @@ builder.Services.AddMestraFluentValidation(builder =>
 });
 ```
 
----
-
 ### 2️. Define Requests and Handlers
 
 ```csharp
@@ -98,8 +88,6 @@ public class PingRequestHandler : IMessageHandler<PingRequest, string>
     }
 }
 ```
-
----
 
 ### 3. Use IMediator
 
@@ -119,8 +107,6 @@ public class MyService
     }
 }
 ```
-
----
 
 ## 🔄 Publish Messages
 
@@ -145,8 +131,6 @@ Usage:
 await _mediator.Publish(new NotificationEvent());
 ```
 
----
-
 ## ⚙️ Advanced: Pipelines & Streaming
 
 ### Pipeline Behavior Example
@@ -162,8 +146,6 @@ public class LoggingBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, 
     }
 }
 ```
-
----
 
 ### Streaming Example
 
@@ -196,8 +178,6 @@ var token = _mediator
     });
 ```
 
----
-
 ## 🧪 Testing
 
 Mestra is fully testable — all core abstractions are interface-based and Rx-friendly.
@@ -206,13 +186,9 @@ Mestra is fully testable — all core abstractions are interface-based and Rx-fr
 dotnet test
 ```
 
----
-
 ## 🤝 Contributing
 
 Contributions are welcome! Please follow standard C# coding conventions and include tests with PRs.
-
----
 
 ## 📄 License
 
