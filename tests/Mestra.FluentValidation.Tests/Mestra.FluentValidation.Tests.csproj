@@ -22,10 +22,6 @@
     </ItemGroup>
 
     <ItemGroup>
-        <Using Include="Xunit"/>
-    </ItemGroup>
-
-    <ItemGroup>
         <ProjectReference Include="..\..\src\Mestra.FluentValidation\Mestra.FluentValidation.csproj"/>
     </ItemGroup>
 

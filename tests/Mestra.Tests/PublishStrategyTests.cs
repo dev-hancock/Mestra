@@ -6,6 +6,7 @@ using System.Reactive.Threading.Tasks;
 using Abstractions;
 using Microsoft.Reactive.Testing;
 using Moq;
+using Xunit;
 
 public class PublishStrategyTests
 {

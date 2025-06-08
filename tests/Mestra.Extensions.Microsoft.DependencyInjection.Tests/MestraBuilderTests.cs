@@ -3,6 +3,7 @@ namespace Mestra.Extensions.Microsoft.DependencyInjection.Tests;
 using System.Reactive.Linq;
 using Abstractions;
 using global::Microsoft.Extensions.DependencyInjection;
+using Xunit;
 
 public class MestraBuilderTests
 {

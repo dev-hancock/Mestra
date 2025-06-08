@@ -20,10 +20,6 @@
     </ItemGroup>
 
     <ItemGroup>
-        <Using Include="Xunit"/>
-    </ItemGroup>
-
-    <ItemGroup>
         <ProjectReference Include="..\..\src\Mestra.Extensions.Microsoft.DependencyInjection\Mestra.Extensions.Microsoft.DependencyInjection.csproj"/>
     </ItemGroup>
 

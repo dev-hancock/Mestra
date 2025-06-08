@@ -6,6 +6,7 @@ using Abstractions;
 using global::FluentValidation;
 using global::FluentValidation.Results;
 using Moq;
+using Xunit;
 
 public class ValidationBehaviorTests
 {

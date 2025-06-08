@@ -3,6 +3,7 @@ namespace Mestra.Tests;
 using System.Reactive.Linq;
 using Abstractions;
 using Moq;
+using Xunit;
 
 public class PipelineTests
 {

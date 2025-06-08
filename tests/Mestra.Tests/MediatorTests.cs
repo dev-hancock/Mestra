@@ -7,6 +7,7 @@ using Abstractions;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Reactive.Testing;
 using Moq;
+using Xunit;
 
 public class MediatorTests
 {

@@ -3,6 +3,7 @@ namespace Mestra.FluentValidation.Tests;
 using Abstractions;
 using global::FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
+using Xunit;
 
 public class MestraFluentValidationBuilderTests
 {
