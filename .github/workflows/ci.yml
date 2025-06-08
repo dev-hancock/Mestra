@@ -47,10 +47,10 @@ jobs:
 
       - name: Test
         run: |
-          dotnet test Mestra.Tests \
+          dotnet test \
             --no-build \
             --configuration Release \
-            --settings Mestra.Tests/coverlet.runsettings \
+            --settings coverlet.runsettings \
             --collect:"XPlat Code Coverage" \
             --results-directory TestResults \
             /p:UseSourceLink=true

@@ -41,13 +41,13 @@ jobs:
 
       - name: Test
         run: |
-          dotnet test Mestra.Tests \
+          dotnet test \
             --no-build \
             --configuration Release
 
       - name: Pack
         run: |
-          dotnet pack Mestra \
+          dotnet pack \
             --configuration Release \
             --no-build \
             --output ./nupkg \
