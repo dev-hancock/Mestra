@@ -6,8 +6,37 @@
         <Nullable>enable</Nullable>
     </PropertyGroup>
 
+    <PropertyGroup>
+        <PackageId>Mestra.FluentValidation</PackageId>
+        <Authors>Adam Hancock</Authors>
+        <Company>Hancock Software Solutions Limited</Company>
+        <Description>FluentValidation integration for the Mestra reactive mediator library.</Description>
+        <PackageTags>mediator mediatr cqrs messaging pipeline reactive validation fluentvalidation</PackageTags>
+        <RepositoryUrl>https://github.com/dev-hancock/Mestra</RepositoryUrl>
+        <PackageLicenseExpression>MIT</PackageLicenseExpression>
+        <PackageProjectUrl>https://github.com/dev-hancock/Mestra</PackageProjectUrl>
+        <IncludeSymbols>true</IncludeSymbols>
+        <IncludeSource>true</IncludeSource>
+        <PackageIcon>icon.png</PackageIcon>
+        <PackageReadmeFile>README.md</PackageReadmeFile>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <None Include="..\..\icon.png" Pack="true" PackagePath="icon.png">
+            <Link>icon.png</Link>
+        </None>
+    </ItemGroup>
+
     <ItemGroup>
         <PackageReference Include="FluentValidation"/>
+        <PackageReference Include="FluentValidation.DependencyInjectionExtensions"/>
+        <PackageReference Include="Microsoft.Extensions.DependencyInjection"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleTo">
+            <_Parameter1>Mestra.FluentValidation.Tests</_Parameter1>
+        </AssemblyAttribute>
     </ItemGroup>
 
     <ItemGroup>

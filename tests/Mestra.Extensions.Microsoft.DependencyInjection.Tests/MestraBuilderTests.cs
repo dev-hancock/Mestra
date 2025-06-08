@@ -1,8 +1,8 @@
-namespace Mestra.Tests;
+namespace Mestra.Extensions.Microsoft.DependencyInjection.Tests;
 
 using System.Reactive.Linq;
 using Abstractions;
-using Microsoft.Extensions.DependencyInjection;
+using global::Microsoft.Extensions.DependencyInjection;
 
 public class MestraBuilderTests
 {

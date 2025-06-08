@@ -8,6 +8,7 @@
         <!-- Mestra -->
         <PackageVersion Include="Microsoft.Extensions.DependencyInjection" Version="9.0.5"/>
         <PackageVersion Include="FluentValidation" Version="12.0.0"/>
+        <PackageVersion Include="FluentValidation.DependencyInjectionExtensions" Version="12.0.0"/>
         <PackageVersion Include="System.Reactive" Version="6.0.1"/>
 
         <!-- Tests -->

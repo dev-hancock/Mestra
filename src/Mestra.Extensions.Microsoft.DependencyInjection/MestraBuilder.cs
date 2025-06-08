@@ -1,8 +1,8 @@
-namespace Mestra;
+namespace Mestra.Extensions.Microsoft.DependencyInjection;
 
 using System.Reflection;
 using Abstractions;
-using Microsoft.Extensions.DependencyInjection;
+using global::Microsoft.Extensions.DependencyInjection;
 
 /// <summary>
 ///     Provides a fluent API for configuring Mestra components.
@@ -11,7 +11,7 @@ public class MestraBuilder
 {
     private readonly IServiceCollection _services;
 
-    public MestraBuilder(IServiceCollection services)
+    internal MestraBuilder(IServiceCollection services)
     {
         _services = services;
     }

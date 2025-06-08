@@ -1,7 +1,7 @@
-namespace Mestra;
+namespace Mestra.Extensions.Microsoft.DependencyInjection;
 
 using Abstractions;
-using Microsoft.Extensions.DependencyInjection;
+using global::Microsoft.Extensions.DependencyInjection;
 
 /// <summary>
 ///     Default implementation of <see cref="IMessageHandlerFactory" /> using IServiceProvider.

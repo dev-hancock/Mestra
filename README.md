@@ -13,6 +13,8 @@ on [Reactive Extensions (Rx)](https://github.com/dotnet/reactive).
 
 Designed for modern, testable, and highly composable application architectures.
 
+---
+
 ## ✨ Features
 
 * ✅ `Send` and `Publish` abstractions over CQRS-style messaging
@@ -24,13 +26,40 @@ Designed for modern, testable, and highly composable application architectures.
 * ✅ Supports streaming messages (`Range`, `Interval`, etc.)
 * ✅ No external dependencies beyond Rx & .NET
 
-## 📦 Installation
+---
+
+## 📦 Packages
+
+| Package                                                                                                                           | Description                                                |
+|-----------------------------------------------------------------------------------------------------------------------------------|------------------------------------------------------------|
+| [Mestra](https://www.nuget.org/packages/Mestra)                                                                                   | Core implementation                                        |
+| [Mestra.Abstractions](https://www.nuget.org/packages/Mestra.Abstractions)                                                         | Core interfaces & contracts (no implementation)            |
+| [Mestra.Extensions.Microsoft.DependencyInjection](https://www.nuget.org/packages/Mestra.Extensions.Microsoft.DependencyInjection) | DI extensions for Microsoft.Extensions.DependencyInjection |
+| [Mestra.FluentValidation](https://www.nuget.org/packages/Mestra.FluentValidation)                                                 | Integration with FluentValidation via pipeline behaviors   |
+
+---
+
+## 📥 Installation
+
+### Minimal core:
 
 ```bash
 dotnet add package Mestra
 ```
 
-> Requires **.NET 8.0 or later**
+### With DI support:
+
+```bash
+dotnet add package Mestra.Extensions.Microsoft.DependencyInjection
+```
+
+### With FluentValidation integration:
+
+```bash
+dotnet add package Mestra.FluentValidation
+```
+
+---
 
 ## 🚀 Quick Start
 
@@ -45,7 +74,18 @@ builder.Services.AddMestra(options =>
 });
 ```
 
-### 2. Define Requests and Handlers
+(Optional FluentValidation integration):
+
+```csharp
+builder.Services.AddMestraFluentValidation(builder =>
+{
+    builder.AddValidatorsFromAssembly(typeof(Startup).Assembly);
+});
+```
+
+---
+
+### 2️. Define Requests and Handlers
 
 ```csharp
 public class PingRequest : IRequest<string> { }
@@ -59,7 +99,9 @@ public class PingRequestHandler : IMessageHandler<PingRequest, string>
 }
 ```
 
-### 3️. Use IMediator
+---
+
+### 3. Use IMediator
 
 ```csharp
 public class MyService
@@ -78,6 +120,8 @@ public class MyService
 }
 ```
 
+---
+
 ## 🔄 Publish Messages
 
 Mestra supports one-to-many eventing via `Publish`:
@@ -90,7 +134,6 @@ public class NotificationEventHandler : IMessageHandler<NotificationEvent, Unit>
     public IObservable<Unit> Handle(NotificationEvent notification)
     {
         Console.WriteLine("Notification event received.");
-        
         return Observable.Return(Unit.Default);
     }
 }
@@ -101,6 +144,8 @@ Usage:
 ```csharp
 await _mediator.Publish(new NotificationEvent());
 ```
+
+---
 
 ## ⚙️ Advanced: Pipelines & Streaming
 
@@ -113,11 +158,12 @@ public class LoggingBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, 
     public IObservable<TResponse> Handle(TRequest request, IObservable<TResponse> next)
     {
         Console.WriteLine($"Handling {typeof(TRequest).Name}");
-        
         return next.Do(_ => Console.WriteLine($"Handled {typeof(TRequest).Name}"));
     }
 }
 ```
+
+---
 
 ### Streaming Example
 
@@ -146,21 +192,27 @@ var token = _mediator
     .Send(new CounterRequest())
     .Subscribe(count => 
     {
-        Console.Writeline($"Counter: {count}");
-    })
+        Console.WriteLine($"Counter: {count}");
+    });
 ```
+
+---
 
 ## 🧪 Testing
 
 Mestra is fully testable — all core abstractions are interface-based and Rx-friendly.
 
-```shell
-    dotnet test
+```bash
+dotnet test
 ```
+
+---
 
 ## 🤝 Contributing
 
 Contributions are welcome! Please follow standard C# coding conventions and include tests with PRs.
+
+---
 
 ## 📄 License
 

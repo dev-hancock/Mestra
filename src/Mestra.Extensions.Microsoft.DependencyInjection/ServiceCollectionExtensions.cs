@@ -1,7 +1,7 @@
-namespace Mestra;
+namespace Mestra.Extensions.Microsoft.DependencyInjection;
 
 using Abstractions;
-using Microsoft.Extensions.DependencyInjection;
+using global::Microsoft.Extensions.DependencyInjection;
 
 /// <summary>
 ///     Provides extension methods for configuring Mestra services.

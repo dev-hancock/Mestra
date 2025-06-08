@@ -1,4 +1,4 @@
-namespace Mestra;
+namespace Mestra.Extensions.Microsoft.DependencyInjection;
 
 using Abstractions;
 
