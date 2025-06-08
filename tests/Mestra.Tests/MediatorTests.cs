@@ -10,12 +10,34 @@ using Moq;
 
 public class MediatorTests
 {
+    private readonly Mock<IMessageHandlerFactory> _handlers;
+
+    private readonly Mock<IPipelineFactory> _pipelines;
+
+    private readonly IServiceCollection _services;
+
+    public MediatorTests()
+    {
+        _services = new ServiceCollection();
+
+        _pipelines = new Mock<IPipelineFactory>();
+
+        _handlers = new Mock<IMessageHandlerFactory>();
+
+        _services
+            .AddSingleton<IMediator, Mediator>()
+            .AddSingleton<ISendDispatcher, SendDispatcher>()
+            .AddSingleton<IPublishDispatcher, PublishDispatcher>()
+            .AddSingleton(_pipelines.Object)
+            .AddSingleton(_handlers.Object)
+            .AddTransient(typeof(IPipeline<,>), typeof(Pipeline<,>))
+            .AddTransient<IPublishStrategy, ParallelPublishStrategy>();
+    }
+
     [Fact]
     public async Task Send_ShouldReturnExpectedResult_WhenHandlerRegistered()
     {
         // Arrange
-        var services = new ServiceCollection().AddMestra();
-
         var scheduler = new TestScheduler();
 
         var handler = new Mock<IMessageHandler<PingRequest, string>>();
@@ -23,9 +45,17 @@ public class MediatorTests
             .Setup(x => x.Handle(It.IsAny<PingRequest>()))
             .Returns(Observable.Return("pong"));
 
-        services.AddTransient<IMessageHandler<PingRequest, string>>(_ => handler.Object);
+        _handlers
+            .Setup(x => x.GetHandler<PingRequest, string>())
+            .Returns(handler.Object);
 
-        var provider = services.BuildServiceProvider();
+        _pipelines
+            .Setup(x => x.GetPipeline(It.IsAny<PingRequest>()))
+            .Returns(() => new Pipeline<PingRequest, string>([]));
+
+        _services.AddTransient<IMessageHandler<PingRequest, string>>(_ => handler.Object);
+
+        var provider = _services.BuildServiceProvider();
         var mediator = provider.GetRequiredService<IMediator>();
 
         // Act
@@ -41,8 +71,6 @@ public class MediatorTests
     public void Send_ShouldReturnExpectedSequence_WhenHandlerReturnsContinuousObservable()
     {
         // Arrange
-        var services = new ServiceCollection().AddMestra();
-
         var scheduler = new TestScheduler();
 
         var handler = new Mock<IMessageHandler<CounterRequest, long>>();
@@ -52,9 +80,17 @@ public class MediatorTests
                 .Interval(TimeSpan.FromSeconds(1), scheduler)
                 .Take(10));
 
-        services.AddTransient<IMessageHandler<CounterRequest, long>>(_ => handler.Object);
+        _handlers
+            .Setup(x => x.GetHandler<CounterRequest, long>())
+            .Returns(handler.Object);
 
-        var provider = services.BuildServiceProvider();
+        _pipelines
+            .Setup(x => x.GetPipeline(It.IsAny<CounterRequest>()))
+            .Returns(() => new Pipeline<CounterRequest, long>([]));
+
+        _services.AddTransient<IMessageHandler<CounterRequest, long>>(_ => handler.Object);
+
+        var provider = _services.BuildServiceProvider();
         var mediator = provider.GetRequiredService<IMediator>();
 
         // Act
@@ -75,8 +111,6 @@ public class MediatorTests
     public async Task Publish_ShouldInvokeHandler_WhenSingleHandlerRegistered()
     {
         // Arrange
-        var services = new ServiceCollection().AddMestra();
-
         var invoked = new[]
         {
             false, false
@@ -94,13 +128,21 @@ public class MediatorTests
         var first = new Mock<IMessageHandler<NotificationEvent, Unit>>();
         var second = new Mock<IMessageHandler<NotificationEvent, Unit>>();
 
+        _handlers
+            .Setup(x => x.GetHandlers<NotificationEvent, Unit>())
+            .Returns([first.Object, second.Object]);
+
+        _pipelines
+            .Setup(x => x.GetPipeline(It.IsAny<NotificationEvent>()))
+            .Returns(() => new Pipeline<NotificationEvent, Unit>([]));
+
         Setup(first, 0);
         Setup(second, 1);
 
-        services.AddTransient<IMessageHandler<NotificationEvent, Unit>>(_ => first.Object);
-        services.AddTransient<IMessageHandler<NotificationEvent, Unit>>(_ => second.Object);
+        _services.AddTransient<IMessageHandler<NotificationEvent, Unit>>(_ => first.Object);
+        _services.AddTransient<IMessageHandler<NotificationEvent, Unit>>(_ => second.Object);
 
-        var provider = services.BuildServiceProvider();
+        var provider = _services.BuildServiceProvider();
         var mediator = provider.GetRequiredService<IMediator>();
 
         // Act
@@ -122,10 +164,12 @@ public class MediatorTests
     public async Task Send_ShouldThrow_WhenNoHandlerRegistered()
     {
         // Arrange
-        var services = new ServiceCollection().AddMestra();
-
-        var provider = services.BuildServiceProvider();
+        var provider = _services.BuildServiceProvider();
         var mediator = provider.GetRequiredService<IMediator>();
+
+        _pipelines
+            .Setup(x => x.GetPipeline(It.IsAny<PingRequest>()))
+            .Returns(() => new Pipeline<PingRequest, string>([]));
 
         // Act
         var ex = await Record.ExceptionAsync(() => mediator.Send(new PingRequest()).ToTask());
@@ -138,10 +182,12 @@ public class MediatorTests
     public async Task Publish_ShouldComplete_WhenNoHandlerRegistered()
     {
         // Arrange
-        var services = new ServiceCollection().AddMestra();
-
-        var provider = services.BuildServiceProvider();
+        var provider = _services.BuildServiceProvider();
         var mediator = provider.GetRequiredService<IMediator>();
+
+        _pipelines
+            .Setup(x => x.GetPipeline(It.IsAny<NotificationEvent>()))
+            .Returns(() => new Pipeline<NotificationEvent, Unit>([]));
 
         // Act
         var ex = await Record.ExceptionAsync(() => mediator.Publish(new NotificationEvent()).ToTask());
