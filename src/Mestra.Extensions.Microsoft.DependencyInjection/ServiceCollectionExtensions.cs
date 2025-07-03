@@ -26,6 +26,9 @@ public static class ServiceCollectionExtensions
         services.AddSingleton<ISender>(sp => sp.GetRequiredService<IMediator>());
         services.AddSingleton<IPublisher>(sp => sp.GetRequiredService<IMediator>());
 
+        services.AddSingleton<IMessageHandlerFactory, MessageHandlerFactory>();
+        services.AddTransient<IPipelineFactory, PipelineFactory>();
+
         configure?.Invoke(builder);
 
         return services;
