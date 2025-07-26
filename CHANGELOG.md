@@ -7,6 +7,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## \[1.1.2] - 2025-07-26
+
+### Added
+
+* Added `ServiceLifetime` parameter to `AddMestra()` for custom lifetime management
+
+### Fixed
+
+* Included missing registration for `SequentialPublishStrategy`
+
+---
+
 ## \[1.1.1] - 2025-06-08
 
 ### Fixed

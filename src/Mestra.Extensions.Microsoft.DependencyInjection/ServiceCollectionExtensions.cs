@@ -15,21 +15,23 @@ public static class ServiceCollectionExtensions
     {
         var builder = new MestraBuilder(services);
 
-        services.AddTransient(typeof(IPipeline<,>), typeof(Pipeline<,>));
-
-        services.AddTransient<IPublishStrategy, ParallelPublishStrategy>();
-
-        services.AddSingleton<ISendDispatcher, SendDispatcher>();
-        services.AddSingleton<IPublishDispatcher, PublishDispatcher>();
-
-        services.AddSingleton<IMediator, Mediator>();
-        services.AddSingleton<ISender>(sp => sp.GetRequiredService<IMediator>());
-        services.AddSingleton<IPublisher>(sp => sp.GetRequiredService<IMediator>());
-
-        services.AddSingleton<IMessageHandlerFactory, MessageHandlerFactory>();
-        services.AddTransient<IPipelineFactory, PipelineFactory>();
-
         configure?.Invoke(builder);
+
+        services.Add(new ServiceDescriptor(typeof(IPipeline<,>), typeof(Pipeline<,>), builder.Lifetime));
+
+        services.Add(new ServiceDescriptor(typeof(IPublishStrategy), typeof(ParallelPublishStrategy), builder.Lifetime));
+        services.Add(new ServiceDescriptor(typeof(IPublishStrategy), typeof(SequentialPublishStrategy), builder.Lifetime));
+
+        services.Add(new ServiceDescriptor(typeof(ISendDispatcher), typeof(SendDispatcher), builder.Lifetime));
+        services.Add(new ServiceDescriptor(typeof(IPublishDispatcher), typeof(PublishDispatcher), builder.Lifetime));
+
+        services.Add(new ServiceDescriptor(typeof(IMediator), typeof(Mediator), builder.Lifetime));
+
+        services.Add(new ServiceDescriptor(typeof(ISender), sp => sp.GetRequiredService<IMediator>(), builder.Lifetime));
+        services.Add(new ServiceDescriptor(typeof(IPublisher), sp => sp.GetRequiredService<IMediator>(), builder.Lifetime));
+
+        services.Add(new ServiceDescriptor(typeof(IMessageHandlerFactory), typeof(MessageHandlerFactory), builder.Lifetime));
+        services.Add(new ServiceDescriptor(typeof(IPipelineFactory), typeof(PipelineFactory), builder.Lifetime));
 
         return services;
     }

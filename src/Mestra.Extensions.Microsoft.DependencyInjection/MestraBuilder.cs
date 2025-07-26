@@ -17,6 +17,11 @@ public class MestraBuilder
     }
 
     /// <summary>
+    ///     Gets or sets the service lifetime for registered components.
+    /// </summary>
+    public ServiceLifetime Lifetime { get; set; } = ServiceLifetime.Transient;
+
+    /// <summary>
     ///     Registers pipeline behaviors.
     /// </summary>
     public MestraBuilder AddBehaviors(params Type[] types)
@@ -32,7 +37,10 @@ public class MestraBuilder
                 .GetInterfaces()
                 .Where(i => i.IsGenericType && i.GetGenericTypeDefinition() == typeof(IPipelineBehavior<,>));
 
-            foreach (var @interface in interfaces) _services.AddTransient(@interface, type);
+            foreach (var @interface in interfaces)
+            {
+                _services.Add(new ServiceDescriptor(@interface, type, Lifetime));
+            }
         }
 
         return this;
@@ -54,7 +62,10 @@ public class MestraBuilder
                 .GetInterfaces()
                 .Where(i => i.IsGenericType && i.GetGenericTypeDefinition() == typeof(IMessageHandler<,>));
 
-            foreach (var @interface in interfaces) _services.AddTransient(@interface, type);
+            foreach (var @interface in interfaces)
+            {
+                _services.Add(new ServiceDescriptor(@interface, type, Lifetime));
+            }
         }
 
         return this;
@@ -80,7 +91,7 @@ public class MestraBuilder
     /// </summary>
     public MestraBuilder UsePublishStrategy<TStrategy>() where TStrategy : class, IPublishStrategy
     {
-        _services.AddTransient<IPublishStrategy, TStrategy>();
+        _services.Add(new ServiceDescriptor(typeof(IPublishStrategy), typeof(TStrategy), Lifetime));
 
         return this;
     }
