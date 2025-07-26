@@ -42,7 +42,7 @@ jobs:
             /k:"${{ env.SONAR_PROJECT_KEY }}" \
             /o:"${{ env.SONAR_ORGANIZATION }}" \
             /d:sonar.token="${{ secrets.SONAR_TOKEN }}" \
-            /d:sonar.cs.opencover.reportsPaths=TestResults/coverage.opencover.xml
+            /d:sonar.cs.opencover.reportsPaths=TestResults/**/coverage.opencover.xml
 
       - name: Build
         run: |
@@ -56,10 +56,7 @@ jobs:
             --no-build \
             --configuration Release \
             --results-directory TestResults \
-            /p:CollectCoverage=true \
-            /p:CoverletOutputFormat=opencover \
-            /p:CoverletOutput=TestResults/coverage.opencover.xml \
-            /p:UseSourceLink=true
+            --settings coverlet.runsettings
 
       - name: End Sonar
         run: dotnet-sonarscanner end /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
